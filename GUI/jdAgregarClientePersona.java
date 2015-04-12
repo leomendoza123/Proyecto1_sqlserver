@@ -6,6 +6,9 @@
 
 package GUI;
 import Logica.Statements;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,9 +19,13 @@ public class jdAgregarClientePersona extends javax.swing.JDialog {
     /**
      * Creates new form jdAgregarCliente
      */
+    DefaultListModel model = new DefaultListModel();
+    
     public jdAgregarClientePersona(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        //listTelefonos = new JList<>( model );
+        //listTelefonos.setModel(model);
     }
 
     /**
@@ -76,10 +83,20 @@ public class jdAgregarClientePersona extends javax.swing.JDialog {
         jLabel10.setText("canton");
 
         btnAgregarTelefono.setText("Agregar Telefono");
+        btnAgregarTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarTelefonoActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("provincia");
 
         btnEliminarTelefono.setText("Eliminar Telefono");
+        btnEliminarTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarTelefonoActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Direccion");
 
@@ -209,6 +226,18 @@ public class jdAgregarClientePersona extends javax.swing.JDialog {
         System.out.println(f);
     }//GEN-LAST:event_btnAgregarClienteActionPerformed
 
+    private void btnAgregarTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTelefonoActionPerformed
+        String telefono=JOptionPane.showInputDialog("Ingrese un nuevo telefo");
+        
+        
+        model.addElement(telefono);
+        listTelefonos.setModel(model);
+    }//GEN-LAST:event_btnAgregarTelefonoActionPerformed
+
+    private void btnEliminarTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarTelefonoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -266,7 +295,7 @@ public class jdAgregarClientePersona extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList listTelefonos;
+    public static javax.swing.JList listTelefonos;
     private javax.swing.JTextField txtApellidoM;
     private javax.swing.JTextField txtApellidoP;
     private javax.swing.JTextField txtCalle;
