@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
  *
  * @author LMariano
  */
-public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
+public class jdModificarOrganizacion extends javax.swing.JDialog {
 
     /**
-     * Creates new form jdInsertarClienteOrganizacion
+     * Creates new form jdModificarOrganizacion
      */
-    public jdAgregarClienteOrganizacion(java.awt.Frame parent, boolean modal) {
+    public jdModificarOrganizacion(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -32,33 +32,39 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel12 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        btnAgregarCliente = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        btnModificar = new javax.swing.JButton();
+        txtCargo = new javax.swing.JTextField();
         txtDireccion = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         txtCiudad = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtNombreOrg = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtNombreCon = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        txtCargo = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jLabel12.setText("Cargo Contacto");
+
         jLabel7.setText("Direccion");
 
-        btnAgregarCliente.setBackground(new java.awt.Color(51, 255, 0));
-        btnAgregarCliente.setText("Agregar Cliente");
-        btnAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
+        jLabel13.setText("Nombre Contacto");
+
+        btnModificar.setBackground(new java.awt.Color(51, 255, 0));
+        btnModificar.setText("Modificar Cliente");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarClienteActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
+
+        jLabel14.setText("Telefono Contacto");
 
         jLabel1.setText("Ingrese cedula, ej A-TTT-CCCCCC");
 
@@ -66,19 +72,13 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
 
         jLabel2.setText("Ingrese nombre de organizacion");
 
-        jLabel12.setText("Cargo Contacto");
-
-        jLabel13.setText("Nombre Contacto");
-
-        jLabel14.setText("Telefono Contacto");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(192, 192, 192))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -98,9 +98,7 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
                                     .addComponent(jLabel13)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel12))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(88, 88, 88)
@@ -131,18 +129,17 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAgregarCliente)
+                        .addComponent(btnModificar)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtNombreOrg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,7 +163,7 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         String nombreOrg=txtNombreOrg.getText();
         String cedula=txtCedula.getText();
         String cargo=txtCargo.getText();
@@ -175,21 +172,21 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
         String direccion=txtDireccion.getText();
         String ciudad=txtCiudad.getText();
         if (nombreEnc =="" ||nombreOrg=="" || cedula =="" || cargo=="" ||
-                telefono=="" || direccion=="" || ciudad==""){
+            telefono=="" || direccion=="" || ciudad==""){
             JOptionPane.showMessageDialog(null, "Faltan datos");
         }
         else{
-             boolean flag=Statements.InsertarOrganizacion(cedula,
-             nombreOrg,  direccion,  ciudad,
-             nombreEnc, cargo, telefono);
-             if (flag==false){
-                 JOptionPane.showMessageDialog(null, "Faltan datos");
-             }
-             else{
-                 JOptionPane.showMessageDialog(null, "Datos Insertados");
-             }
+            boolean flag=Statements.InsertarOrganizacion(cedula,
+                nombreOrg,  direccion,  ciudad,
+                nombreEnc, cargo, telefono);
+            if (flag==false){
+                JOptionPane.showMessageDialog(null, "Faltan datos");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Datos Insertados");
+            }
         }
-    }//GEN-LAST:event_btnAgregarClienteActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,20 +205,20 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jdAgregarClienteOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jdModificarOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jdAgregarClienteOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jdModificarOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jdAgregarClienteOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jdModificarOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jdAgregarClienteOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(jdModificarOrganizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                jdAgregarClienteOrganizacion dialog = new jdAgregarClienteOrganizacion(new javax.swing.JFrame(), true);
+                jdModificarOrganizacion dialog = new jdModificarOrganizacion(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -234,7 +231,7 @@ public class jdAgregarClienteOrganizacion extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregarCliente;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

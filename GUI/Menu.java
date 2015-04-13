@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 public class Menu {
 
     public void showMenuPrincipal() {
+        try{
         int opcion = -1;
         while (opcion != 4) {
             opcion = Integer.parseInt(JOptionPane.showInputDialog(
@@ -39,7 +40,7 @@ public class Menu {
                     System.exit(0);
                     break;
             }
-        }
+        }}catch(Exception e){System.exit(0);}
     }
 
     private void ShowMenuCliente() {
@@ -49,7 +50,7 @@ public class Menu {
             jdAgregarClientePersona(principal, true);
         jdAgregarClienteOrganizacion jdAgregarOrg = new 
             jdAgregarClienteOrganizacion(principal, true);
-        jdModificarCliente jdModificar = new jdModificarCliente(principal, true);
+        jdModificarPersona jdModificar = new jdModificarPersona(principal, true);
         jdListaClientes jdLista= new jdListaClientes(principal, true);
         while (opcion != 5) {
             opcion = Integer.parseInt(
