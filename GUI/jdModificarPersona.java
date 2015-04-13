@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package GUI;
 
 import Logica.Statements;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -16,17 +19,46 @@ import javax.swing.JOptionPane;
  * @author LMariano
  */
 public class jdModificarPersona extends javax.swing.JDialog {
+
     DefaultListModel model = new DefaultListModel();
     ArrayList<String> telefonos = new ArrayList();
-    /**
 
+    /**
+     *
      */
-    public jdModificarPersona(java.awt.Frame parent, boolean modal,String
-            paramCedula) {
+    public jdModificarPersona(java.awt.Frame parent, boolean modal, String paramCedula) {
         super(parent, modal);
-        initComponents();
-        txtCedula.setText(paramCedula);
-        System.out.println(paramCedula);
+        try {
+            initComponents();
+            txtCedula.setText(paramCedula);
+            System.out.println(paramCedula);
+            cargarDatos(paramCedula);
+        } catch (SQLException ex) {
+            Logger.getLogger(jdModificarPersona.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void cargarDatos(String cedula) throws SQLException {
+        ResultSet rs = Statements.obtenerPersona(cedula);
+        if (rs == null) {
+            System.out.println("indeed");
+        }
+        /*
+         txtCiudad.setText(rs.getString(4));//4,5,6
+         txtDireccion.setText(rs.getString(5));
+         txtNombreC.setText(rs.getString(6));
+         **/
+        int cont = 0;
+        while (rs.next()) {
+            if (cont == 0) {
+                txtCiudad.setText(rs.getString(4));//4,5,6
+                txtDireccion.setText(rs.getString(5));
+                txtNombreC.setText(rs.getString(6));
+                cont = 1;
+            }
+            model.addElement(rs.getString(1));
+            listTelefonos.setModel(model);
+        }
     }
 
     /**
@@ -195,14 +227,17 @@ public class jdModificarPersona extends javax.swing.JDialog {
             for (int i = 0; i < model.size(); i++) {
                 telefonos.add(model.get(i).toString());
             }
-            if (nombre=="" || cedula=="" || nombre_completo==""
-                || direccion=="" || ciudad=="" || telefonos.size()==0){
+            if (nombre == "" || cedula == "" || nombre_completo == ""
+                    || direccion == "" || ciudad == "" || telefonos.size() == 0) {
                 JOptionPane.showMessageDialog(null, "Faltan datos");
-            }else{
-                boolean flag=Statements.InsertarPersona(
-                    cedula, nombre_completo, direccion, ciudad, telefonos);
-                if (flag==false){JOptionPane.showMessageDialog(null, "Faltan datos");}
-                else{JOptionPane.showMessageDialog(null, "Datos Ingresados :)");}
+            } else {
+                boolean flag = Statements.InsertarPersona(
+                        cedula, nombre_completo, direccion, ciudad, telefonos);
+                if (flag == false) {
+                    JOptionPane.showMessageDialog(null, "Faltan datos");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Datos Modificados :)");
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Verificar Todos los datos existen");
@@ -239,7 +274,7 @@ public class jdModificarPersona extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                jdModificarPersona dialog = new jdModificarPersona(new javax.swing.JFrame(), true,"");
+                jdModificarPersona dialog = new jdModificarPersona(new javax.swing.JFrame(), true, "");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

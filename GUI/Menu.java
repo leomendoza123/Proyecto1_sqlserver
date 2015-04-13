@@ -10,6 +10,7 @@ package GUI;
  * @author LMariano
  */
 import Logica.Statements;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -48,13 +49,12 @@ public class Menu {
         }
     }
 
-    private void ShowMenuCliente() {
+    private void ShowMenuCliente() throws SQLException {
         int opcion = -1;
         JFrame principal = new JFrame();
         jdAgregarClientePersona jdAgregarPersona = new jdAgregarClientePersona(principal, true);
         jdAgregarClienteOrganizacion jdAgregarOrg = new jdAgregarClienteOrganizacion(principal, true);
-        jdModificarPersona jdModPersona = new jdModificarPersona(principal, true
-        ,"");
+        
         jdModificarOrganizacion modOrg = new jdModificarOrganizacion(principal,
                 true);
         jdListaClientes jdLista = new jdListaClientes(principal, true);
@@ -92,6 +92,8 @@ public class Menu {
                             String cedula = JOptionPane.showInputDialog(
                                     "Ingrese la cedula de la persona a modificar");
                             if (Statements.existePersona(cedula)) {
+                                jdModificarPersona jdModPersona = new 
+        jdModificarPersona(principal, true,"");
                                 jdModPersona= new jdModificarPersona(principal,
                                         true, cedula);
                                 jdModPersona.setVisible(true);

@@ -31,6 +31,7 @@ public class Statements {
         }catch(Exception e){e.printStackTrace();return false;}
         return false;
     }
+
     public static boolean InsertarPersona(String cedula,
             String nombreCliente, String direccion, String ciudad,
             ArrayList<String> telefonos) {
@@ -41,8 +42,7 @@ public class Statements {
             Statement stmt = c.createStatement();
             stmt.execute(query);
 
-            query = "select top 1 idCliente from Cliente WHERE NOMBRE='"+
-                    nombreCliente+"';";
+            query = "select top 1 idCliente from Cliente order by idCliente desc;";
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             int idCliente = -1;
@@ -116,29 +116,23 @@ public class Statements {
         ResultSet rs = null;
         try {
             Connection c = Conexion.conectar();
-            String query = "select * from Cliente,Persona,Direccion,Telefono "
-                    + " where Persona.cedula='" + cedula + "'";
+            String query = "Select t.numTelefono,c.idCliente,c.estado,d.ciudad,"
+                    + "d.direccion,c.nombre from Cliente as c "
+                    +"inner join Persona as per "
+                    + "On Per.idCliente=c.idCliente "
+                    
+                    +"Inner join Direccion d " 
+                    +"On Per.idCliente=d.idCliente "
+                    
+                    +"Inner join Telefono t "
+                    +"On Per.cedula=t.cedula "
+                    
+                    + " WHERE per.cedula='"+cedula+"';";
             Statement stmt = c.createStatement();
             rs = stmt.executeQuery(query);
-            int idCliente = -1;
-            while (rs.next()) {
-                System.out.println(rs.getString(1));//IDCLiente
-                System.out.println(rs.getString(2));//Estado
-                System.out.println(rs.getString(3));//nombre Cliente
-                System.out.println(rs.getString(4));//CEdula
-
-                System.out.println(rs.getString(6));//iddir
-                System.out.println(rs.getString(7));//dir
-                System.out.println(rs.getString(8));//ciudad
-
-                System.out.println(rs.getString(10));//id tel
-                System.out.println(rs.getString(11));//numtel
-
-                System.out.println("----------");
-            }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ssssss");
+            System.out.println("Error");
         }
         return rs;
     }
