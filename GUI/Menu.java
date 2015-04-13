@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 public class Menu {
 
     public void showMenuPrincipal() {
+        try{
         int opcion = -1;
         while (opcion != 4) {
             opcion = Integer.parseInt(JOptionPane.showInputDialog(
@@ -39,16 +40,22 @@ public class Menu {
                     System.exit(0);
                     break;
             }
-        }
+        }}catch(Exception e){System.exit(0);}
     }
 
     private void ShowMenuCliente() {
         int opcion = -1;
         JFrame principal = new JFrame();
-        jdAgregarClientePersona jdAgregarPersona = new jdAgregarClientePersona(principal, true);
-        jdAgregarClienteOrganizacion jdAgregarOrg = new jdAgregarClienteOrganizacion(principal, true);
-        jdModificarCliente jdModificar = new jdModificarCliente(principal, true);
-        jdListaClientes jdLista = new jdListaClientes(principal, true);
+        jdAgregarClientePersona jdAgregarPersona = new 
+            jdAgregarClientePersona(principal, true);
+        jdAgregarClienteOrganizacion jdAgregarOrg = new 
+            jdAgregarClienteOrganizacion(principal, true);
+        jdModificarPersona jdModificarPersona = new 
+            jdModificarPersona(principal, true);
+        jdModificarOrganizacion modOrg=new jdModificarOrganizacion(principal, 
+                true);
+        jdListaClientes jdLista= new jdListaClientes(principal, true);
+        int op;
         while (opcion != 5) {
             opcion = Integer.parseInt(
                     JOptionPane.showInputDialog(
@@ -61,25 +68,29 @@ public class Menu {
                     ));//Cambiar el titulo del cuadro
             switch (opcion) {
                 case 1:
-                    int op;
-                    try {
-                        op = Integer.parseInt(JOptionPane.showInputDialog(
-                                "1)Insertar Persona"
-                                + "2)Insertar Organizacion"));
-                        if (op == 1) {
-                            jdAgregarPersona.setVisible(true);
-                            jdAgregarPersona.toFront();
-                        }
-                        if (op == 2) {
-                            jdAgregarOrg.setVisible(true);
-                            jdAgregarOrg.setVisible(true);
-                        }
-                    } catch (Exception e) {
+                    try{
+                    op=Integer.parseInt(JOptionPane.showInputDialog(
+                            "1)Insertar Persona\n"+
+                                    "2)Insertar Organizacion"));
+                    if(op==1){
+                        jdAgregarPersona.setVisible(true);
+                        jdAgregarPersona.toFront();
                     }
                     break;
                 case 2:
-                    jdModificar.setVisible(true);
-                    jdModificar.toFront();
+                    try{
+                    op=Integer.parseInt(JOptionPane.showInputDialog(
+                            "1)Modificar Persona\n"+
+                                    "2)Modificar Organizacion"));
+                    if(op==1){
+                        jdModificarPersona.setVisible(true);
+                        jdModificarPersona.toFront();
+                    }
+                    if (op==2){
+                        modOrg.setVisible(true);
+                        modOrg.setVisible(true);
+                    }
+                    }catch(Exception e){}
                     break;
                 case 3:
                     suspenderCliente();
