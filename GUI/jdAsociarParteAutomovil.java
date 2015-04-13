@@ -5,6 +5,14 @@
  */
 package GUI;
 
+import Logica.Revisiones;
+import Logica.Statements;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author lumontero
@@ -14,9 +22,46 @@ public class jdAsociarParteAutomovil extends javax.swing.JDialog {
     /**
      * Creates new form jdAsociarParteAutomovil
      */
+    DefaultListModel modelParte = new DefaultListModel();
+    DefaultListModel modelParteIds = new DefaultListModel();
+    DefaultListModel modelTipoAutomovil = new DefaultListModel();
+    DefaultListModel modelTipoAutomovilIds = new DefaultListModel();
+
     public jdAsociarParteAutomovil(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        CargaTipoAutomovil();
+        CargaParte();
+    }
+
+    private void CargaTipoAutomovil() {
+        ResultSet proveedores = Statements.getTipoAutoMovil();
+        try {
+            while (proveedores.next()) {
+                modelTipoAutomovilIds.addElement(proveedores.getInt("idTIpo"));
+                modelTipoAutomovil.addElement(proveedores.getString("modelo") + "/" + proveedores.getString("anno"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listaAutomovil.setModel(modelTipoAutomovil);
+    }
+
+    private void CargaParte() {
+        ResultSet parte = Statements.getParte();
+        try {
+            while (parte.next()) {
+                modelParte.addElement(parte.getString("nombreParte"));
+                modelParteIds.addElement(parte.getInt("idParte"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listaParte.setModel(modelParte);
     }
 
     /**
@@ -50,6 +95,11 @@ public class jdAsociarParteAutomovil extends javax.swing.JDialog {
 
         jButton2.setBackground(new java.awt.Color(0, 255, 153));
         jButton2.setText("Asociar Parte Automovil");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,6 +139,20 @@ public class jdAsociarParteAutomovil extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        try {
+            int parte = (int) modelParteIds.getElementAt(listaParte.getSelectedIndex());
+            int Automovil = (int) modelTipoAutomovilIds.getElementAt(listaAutomovil.getSelectedIndex());
+            Statements.IsertarRelacionProveedorAutomovil(parte, Automovil);
+
+        } catch (Exception e) {
+            Revisiones.ErrorSelecionDeListas("Parte, Automovil");
+
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -5,6 +5,16 @@
  */
 package GUI;
 
+import Logica.Revisiones;
+import Logica.Statements;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author lumontero
@@ -14,9 +24,43 @@ public class jdIAgregarParte extends javax.swing.JDialog {
     /**
      * Creates new form jdIAgregarParte
      */
+    DefaultListModel modelMarca = new DefaultListModel();
+    DefaultListModel modelFabricante = new DefaultListModel();
+
     public jdIAgregarParte(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        CargaMarcas();
+        CargaFabricante();
+
+    }
+
+    private void CargaMarcas() {
+        ResultSet marcas = Statements.getMarcas();
+        try {
+            while (marcas.next()) {
+                modelMarca.addElement(marcas.getString("marca"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listMarca.setModel(modelMarca);
+    }
+
+    private void CargaFabricante() {
+        ResultSet Fabricantes = Statements.getFabricantePartes();
+        try {
+            while (Fabricantes.next()) {
+                modelFabricante.addElement(Fabricantes.getString("nombre"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listFabricante.setModel(modelFabricante);
     }
 
     /**
@@ -106,7 +150,19 @@ public class jdIAgregarParte extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        
+        String NombreParte = txtNombre.getText();
+        try{
+            String Marca = listMarca.getSelectedValue().toString();
+            String Fabricante = listFabricante.getSelectedValue().toString();
+            Statements.InsertarParte(NombreParte, Marca, Fabricante);
+        }
+        catch (Exception e){
+            Revisiones.ErrorSelecionDeListas("Marca, Fabricante");
+ 
+        }
+
+        
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**

@@ -24,10 +24,10 @@ public class Conexion {
             // Load the SQLServerDriver class, build the 
             // connection string, and get a connection 
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); 
-            String connectionUrl = "jdbc:sqlserver://MARIANO\\LUMONTERO;" + 
+            String connectionUrl = "jdbc:sqlserver://localhost;" + 
                                     "database=Proyecto_I;" + 
-                                    "user=sa;" + 
-                                    "password=sa"; 
+                                    "user=test;" + 
+                                    "password=test"; 
             con = DriverManager.getConnection(connectionUrl); 
             /*
             // Create and execute an SQL statement that returns some data.  
@@ -43,7 +43,7 @@ public class Conexion {
        }  
        catch(Exception e)  
        { 
-            System.out.println("Error al conectarse a la base"); 
+            System.out.println("Error al conectarse a la base "+e); 
             System.exit(0);  
        }
        return con;

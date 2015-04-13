@@ -45,12 +45,10 @@ public class Menu {
     private void ShowMenuCliente() {
         int opcion = -1;
         JFrame principal = new JFrame();
-        jdAgregarClientePersona jdAgregarPersona = new 
-            jdAgregarClientePersona(principal, true);
-        jdAgregarClienteOrganizacion jdAgregarOrg = new 
-            jdAgregarClienteOrganizacion(principal, true);
+        jdAgregarClientePersona jdAgregarPersona = new jdAgregarClientePersona(principal, true);
+        jdAgregarClienteOrganizacion jdAgregarOrg = new jdAgregarClienteOrganizacion(principal, true);
         jdModificarCliente jdModificar = new jdModificarCliente(principal, true);
-        jdListaClientes jdLista= new jdListaClientes(principal, true);
+        jdListaClientes jdLista = new jdListaClientes(principal, true);
         while (opcion != 5) {
             opcion = Integer.parseInt(
                     JOptionPane.showInputDialog(
@@ -64,19 +62,20 @@ public class Menu {
             switch (opcion) {
                 case 1:
                     int op;
-                    try{
-                    op=Integer.parseInt(JOptionPane.showInputDialog(
-                            "1)Insertar Persona"+
-                                    "2)Insertar Organizacion"));
-                    if(op==1){
-                        jdAgregarPersona.setVisible(true);
-                        jdAgregarPersona.toFront();
+                    try {
+                        op = Integer.parseInt(JOptionPane.showInputDialog(
+                                "1)Insertar Persona"
+                                + "2)Insertar Organizacion"));
+                        if (op == 1) {
+                            jdAgregarPersona.setVisible(true);
+                            jdAgregarPersona.toFront();
+                        }
+                        if (op == 2) {
+                            jdAgregarOrg.setVisible(true);
+                            jdAgregarOrg.setVisible(true);
+                        }
+                    } catch (Exception e) {
                     }
-                    if (op==2){
-                        jdAgregarOrg.setVisible(true);
-                        jdAgregarOrg.setVisible(true);
-                    }
-                    }catch(Exception e){}
                     break;
                 case 2:
                     jdModificar.setVisible(true);
@@ -96,16 +95,6 @@ public class Menu {
     private void ShowMenuPartes() {
         int opcion = -1;
         JFrame principal = new JFrame();
-        jdIAgregarParte jdAgregar = new jdIAgregarParte(principal, true);
-        jdBorrarParte jdBorrar = new jdBorrarParte(principal, true);
-        jdAsociarParteProovedor jdAPP=new jdAsociarParteProovedor(principal,
-                true);
-        jdAsociarParteAutomovil jdAPA = new jdAsociarParteAutomovil(principal,
-                true);
-        jdActualizarPrecioProovedor jdActualizar = 
-                new jdActualizarPrecioProovedor(principal, true);
-        jdListarParteXAutomovil jdListar=new 
-        jdListarParteXAutomovil(principal,true);
         while (opcion != 7) {
             opcion = Integer.parseInt(JOptionPane.showInputDialog(
                     "*****Menu Partes*****\n"
@@ -120,26 +109,33 @@ public class Menu {
             ));//Cambiar el titulo del cuadro
             switch (opcion) {
                 case 1:
+                    jdIAgregarParte jdAgregar = new jdIAgregarParte(principal, true);
                     jdAgregar.setVisible(true);
                     jdAgregar.toFront();
                     break;
                 case 2:
+                    jdBorrarParte jdBorrar = new jdBorrarParte(principal, true);
+
                     jdBorrar.setVisible(true);
                     jdBorrar.toFront();
                     break;
                 case 3:
+                    jdAsociarParteProovedor jdAPP = new jdAsociarParteProovedor(principal, true);
                     jdAPP.setVisible(true);
                     jdAPP.toFront();
                     break;
                 case 4:
+                    jdAsociarParteAutomovil jdAPA = new jdAsociarParteAutomovil(principal,true);
                     jdAPA.setVisible(true);
                     jdAPA.toFront();
                     break;
                 case 5:
+                    jdActualizarPrecioProovedor jdActualizar  = new jdActualizarPrecioProovedor(principal, true);
                     jdActualizar.setVisible(true);
                     jdActualizar.toFront();
                     break;
                 case 6:
+                    jdListarParteXAutomovil jdListar = new jdListarParteXAutomovil(principal, true);
                     jdListar.setVisible(true);
                     jdListar.toFront();
                     break;
@@ -147,13 +143,13 @@ public class Menu {
         }
         /*
          Insertar nuevas partes (además de los datos de parte, se incluye la 
-        marca y  el fabricante, pero no proveedores).
+         marca y  el fabricante, pero no proveedores).
          Borrar una parte (no borrar si participa en una orden). 
          Asociar partes con proveedores (incluir información de costos). 
          Asociar partes con tipos de automóviles. 
          Actualizar precios de una parte ofrecida por un proveedor. 
          Listar partes por tipos de automóviles: dado modelo y año de 
-        manufactura, obtener los datos de las partes que corresponden. 
+         manufactura, obtener los datos de las partes que corresponden. 
          */
     }
 
@@ -192,5 +188,5 @@ public class Menu {
         //Si la query encuentra la cedula retorna "Cliente x-xxxx suspendido"
         //Else No se encontro cliente
     }
-    
+
 }

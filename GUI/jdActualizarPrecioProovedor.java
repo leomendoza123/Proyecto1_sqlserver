@@ -5,6 +5,14 @@
  */
 package GUI;
 
+import Logica.Revisiones;
+import Logica.Statements;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author lumontero
@@ -14,10 +22,71 @@ public class jdActualizarPrecioProovedor extends javax.swing.JDialog {
     /**
      * Creates new form jdActualizarPrecioProovedor
      */
+    DefaultListModel modelParte = new DefaultListModel();
+    DefaultListModel modelParteIds = new DefaultListModel();
+
+    DefaultListModel modelProveedores = new DefaultListModel();
+    DefaultListModel modelProveedoresGan = new DefaultListModel();
+    DefaultListModel modelProveedoresPrePro = new DefaultListModel();
+    DefaultListModel modelProveedoresPreClie = new DefaultListModel();
+
     public jdActualizarPrecioProovedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        CargaParte();
     }
+
+    private void CargaProovedorXParte(int idParte) {
+         modelProveedores = new DefaultListModel();
+         modelProveedoresGan = new DefaultListModel();
+         modelProveedoresPrePro = new DefaultListModel();
+         modelProveedoresPreClie = new DefaultListModel();
+
+        ResultSet proovedores = Statements.getProovedorXParte(idParte);
+        try {
+            while (proovedores.next()) {
+                modelProveedores.addElement(proovedores.getString("nombre"));
+                modelProveedoresGan.addElement(proovedores.getInt("porcentajeGanancia"));
+                modelProveedoresPrePro.addElement(proovedores.getInt("precioXproveedor"));
+                modelProveedoresPreClie.addElement(proovedores.getInt("precioCliente"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listProveedores.setModel(modelProveedores);
+    }
+
+    private void CargaParte() {
+        ResultSet parte = Statements.getParte();
+        try {
+            while (parte.next()) {
+                modelParte.addElement(parte.getString("nombreParte"));
+                modelParteIds.addElement(parte.getInt("idParte"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listPartes.setModel(modelParte);
+    }
+        private boolean Calcular() {
+        try {
+            String Porcentaje = jTextGanancia.getText();
+            String PrecioProveedor = jTextProovedor.getText();
+            Revisiones.tamanoString(Porcentaje, 100);
+            Revisiones.tamanoString(PrecioProveedor, 100);
+            int IntPorcentaje = Revisiones.esEntero(Porcentaje);
+            int IntPrecioProveedor = Revisiones.esEntero(PrecioProveedor);
+            int precio = IntPrecioProveedor + IntPrecioProveedor * IntPorcentaje / 100;
+            jTextCliente.setText("" + precio);
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,28 +98,64 @@ public class jdActualizarPrecioProovedor extends javax.swing.JDialog {
     private void initComponents() {
 
         btnActualizar = new javax.swing.JButton();
-        jTextField6 = new javax.swing.JTextField();
+        jTextCliente = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnCalcular = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
+        jTextProovedor = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jTextGanancia = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listPartes = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listProveedores = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnActualizar.setBackground(new java.awt.Color(0, 255, 153));
         btnActualizar.setText("Actualizar Precio Proovedor");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
-        jTextField6.setEditable(false);
+        jTextCliente.setEditable(false);
 
         jLabel3.setText("Precio Proovedor");
 
         btnCalcular.setText("Calcular Precio Cliente");
+        btnCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Precio Cliente");
 
         jLabel4.setText("% Ganancia");
+
+        jLabel1.setText("Partes");
+
+        jLabel2.setText("Proveedores");
+
+        listPartes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listPartes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listPartesValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(listPartes);
+
+        listProveedores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listProveedores.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listProveedoresValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(listProveedores);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -60,17 +165,17 @@ public class jdActualizarPrecioProovedor extends javax.swing.JDialog {
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextProovedor, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(35, 35, 35)
                                 .addComponent(btnCalcular))
                             .addComponent(jLabel5)))
@@ -78,28 +183,89 @@ public class jdActualizarPrecioProovedor extends javax.swing.JDialog {
                         .addGap(56, 56, 56)
                         .addComponent(btnActualizar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(295, 295, 295)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(311, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextProovedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCalcular))
                 .addGap(18, 18, 18)
                 .addComponent(btnActualizar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(24, 24, 24)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2))
+                    .addGap(7, 7, 7)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2))
+                    .addContainerGap(163, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void listPartesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listPartesValueChanged
+        int idParte = (int) modelParteIds.getElementAt(listPartes.getSelectedIndex());
+        CargaProovedorXParte(idParte);
+    }//GEN-LAST:event_listPartesValueChanged
+
+    private void listProveedoresValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listProveedoresValueChanged
+        try{
+        jTextCliente.setText(modelProveedoresPreClie.getElementAt(listProveedores.getSelectedIndex()).toString());
+        jTextGanancia.setText(modelProveedoresGan.getElementAt(listProveedores.getSelectedIndex()).toString());
+        jTextProovedor.setText(modelProveedoresPrePro.getElementAt(listProveedores.getSelectedIndex()).toString());
+        }
+        catch (Exception e){
+            return; 
+        }
+
+    }//GEN-LAST:event_listProveedoresValueChanged
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        if (Calcular()) {
+            try {
+                String Porcentaje = jTextGanancia.getText();
+                String PrecioProveedor = jTextProovedor.getText();
+                String PrecioCliente = jTextCliente.getText();
+                int Parte = (int)modelParteIds.getElementAt(listPartes.getSelectedIndex());
+                String Proveedor = listProveedores.getSelectedValue().toString();
+                Statements.UpdateRelacionProveedorParte(Porcentaje, PrecioProveedor, PrecioCliente, Parte, Proveedor);
+
+            } catch (Exception e) {
+                Revisiones.ErrorSelecionDeListas("Parte, Proveedor");
+                return;
+            }
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
+        Calcular();
+    }//GEN-LAST:event_btnCalcularActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,11 +312,17 @@ public class jdActualizarPrecioProovedor extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCalcular;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextCliente;
+    private javax.swing.JTextField jTextGanancia;
+    private javax.swing.JTextField jTextProovedor;
+    private javax.swing.JList listPartes;
+    private javax.swing.JList listProveedores;
     // End of variables declaration//GEN-END:variables
 }

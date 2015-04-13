@@ -5,6 +5,14 @@
  */
 package GUI;
 
+import Logica.Revisiones;
+import Logica.Statements;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author lumontero
@@ -14,9 +22,28 @@ public class jdListarParteXAutomovil extends javax.swing.JDialog {
     /**
      * Creates new form jdListarParteXAutomovil
      */
+        DefaultListModel modelPartes = new DefaultListModel();
+
     public jdListarParteXAutomovil(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+      private void CargaPartes(int anno, String modelo) {
+        modelPartes = new DefaultListModel();
+        ResultSet partes = Statements.getParteXTipoCarro(anno, modelo);
+
+        
+        try {
+            while (partes.next()) {
+                modelPartes.addElement(partes.getString("nombreParte"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jdIAgregarParte.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listParte.setModel(modelPartes);
     }
 
     /**
@@ -29,24 +56,28 @@ public class jdListarParteXAutomovil extends javax.swing.JDialog {
     private void initComponents() {
 
         btnBuscar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtResultados = new javax.swing.JTextArea();
         txtModelo = new javax.swing.JTextField();
         txtAnnio = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listParte = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnBuscar.setText("Buscar");
-
-        txtResultados.setColumns(20);
-        txtResultados.setRows(5);
-        jScrollPane1.setViewportView(txtResultados);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Modelo");
 
         jLabel2.setText("Annio Manufactura");
+
+        listParte.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(listParte);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,7 +86,6 @@ public class jdListarParteXAutomovil extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -68,7 +98,8 @@ public class jdListarParteXAutomovil extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtAnnio, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                                .addComponent(btnBuscar)))))
+                                .addComponent(btnBuscar))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -90,6 +121,20 @@ public class jdListarParteXAutomovil extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        try {
+            String modelo = txtModelo.getText();
+            int anno = Revisiones.esEntero(txtAnnio.getText());
+            CargaPartes(anno, modelo);
+        
+        }
+        catch (Exception e){
+            return; 
+        }
+
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,8 +183,8 @@ public class jdListarParteXAutomovil extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList listParte;
     private javax.swing.JTextField txtAnnio;
     private javax.swing.JTextField txtModelo;
-    private javax.swing.JTextArea txtResultados;
     // End of variables declaration//GEN-END:variables
 }
