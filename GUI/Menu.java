@@ -9,52 +9,55 @@ package GUI;
  *
  * @author LMariano
  */
+import Logica.Statements;
+import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Menu {
 
     public void showMenuPrincipal() {
-        try{
-        int opcion = -1;
-        while (opcion != 4) {
-            opcion = Integer.parseInt(JOptionPane.showInputDialog(
-                    "*****Menu de Opciones*****\n"
-                    + "1)Clientes\n"
-                    + "2)Partes\n"
-                    + "3)Orden\n"
-                    + "4)Salir\n"
-            ));//Cambiar el titulo del cuadro
-            switch (opcion) {
-                case 1:
-                    ShowMenuCliente();
-                    break;
-                case 2:
-                    ShowMenuPartes();
-                    break;
-                case 3:
-                    ShowMenuOrden();
-                    break;
-                case 4:
-                    JOptionPane.showMessageDialog(null, "Hasta Luego");
-                    System.exit(0);
-                    break;
+        try {
+            int opcion = -1;
+            while (opcion != 4) {
+                opcion = Integer.parseInt(JOptionPane.showInputDialog(
+                        "*****Menu de Opciones*****\n"
+                        + "1)Clientes\n"
+                        + "2)Partes\n"
+                        + "3)Orden\n"
+                        + "4)Salir\n"
+                ));//Cambiar el titulo del cuadro
+                switch (opcion) {
+                    case 1:
+                        ShowMenuCliente();
+                        break;
+                    case 2:
+                        ShowMenuPartes();
+                        break;
+                    case 3:
+                        ShowMenuOrden();
+                        break;
+                    case 4:
+                        JOptionPane.showMessageDialog(null, "Hasta Luego");
+                        System.exit(0);
+                        break;
+                }
             }
-        }}catch(Exception e){System.exit(0);}
+        } catch (Exception e) {
+            System.exit(0);
+        }
     }
 
     private void ShowMenuCliente() {
         int opcion = -1;
         JFrame principal = new JFrame();
-        jdAgregarClientePersona jdAgregarPersona = new 
-            jdAgregarClientePersona(principal, true);
-        jdAgregarClienteOrganizacion jdAgregarOrg = new 
-            jdAgregarClienteOrganizacion(principal, true);
-        jdModificarPersona jdModificarPersona = new 
-            jdModificarPersona(principal, true);
-        jdModificarOrganizacion modOrg=new jdModificarOrganizacion(principal, 
+        jdAgregarClientePersona jdAgregarPersona = new jdAgregarClientePersona(principal, true);
+        jdAgregarClienteOrganizacion jdAgregarOrg = new jdAgregarClienteOrganizacion(principal, true);
+        jdModificarPersona jdModPersona = new jdModificarPersona(principal, true
+        ,"");
+        jdModificarOrganizacion modOrg = new jdModificarOrganizacion(principal,
                 true);
-        jdListaClientes jdLista= new jdListaClientes(principal, true);
+        jdListaClientes jdLista = new jdListaClientes(principal, true);
         int op;
         while (opcion != 5) {
             opcion = Integer.parseInt(
@@ -68,29 +71,42 @@ public class Menu {
                     ));//Cambiar el titulo del cuadro
             switch (opcion) {
                 case 1:
-                    try{
-                    op=Integer.parseInt(JOptionPane.showInputDialog(
-                            "1)Insertar Persona\n"+
-                                    "2)Insertar Organizacion"));
-                    if(op==1){
+                    op = Integer.parseInt(JOptionPane.showInputDialog(
+                            "1)Insertar Persona\n"
+                            + "2)Insertar Organizacion"));
+                    if (op == 1) {
                         jdAgregarPersona.setVisible(true);
                         jdAgregarPersona.toFront();
                     }
+                    if (op == 2) {
+                        jdAgregarOrg.setVisible(true);
+                        jdAgregarOrg.toFront();
+                    }
                     break;
                 case 2:
-                    try{
-                    op=Integer.parseInt(JOptionPane.showInputDialog(
-                            "1)Modificar Persona\n"+
-                                    "2)Modificar Organizacion"));
-                    if(op==1){
-                        jdModificarPersona.setVisible(true);
-                        jdModificarPersona.toFront();
+                    try {
+                        op = Integer.parseInt(JOptionPane.showInputDialog(
+                                "1)Modificar Persona\n"
+                                + "2)Modificar Organizacion"));
+                        if (op == 1) {
+                            String cedula = JOptionPane.showInputDialog(
+                                    "Ingrese la cedula de la persona a modificar");
+                            if (Statements.existePersona(cedula)) {
+                                jdModPersona= new jdModificarPersona(principal,
+                                        true, cedula);
+                                jdModPersona.setVisible(true);
+                                jdModPersona.toFront();
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Cliente no existe");
+                            }
+                        }
+                        if (op == 2) {
+                            modOrg.setVisible(true);
+                            modOrg.toFront();
+                        }
+                    } catch (Exception e) {
                     }
-                    if (op==2){
-                        modOrg.setVisible(true);
-                        modOrg.setVisible(true);
-                    }
-                    }catch(Exception e){}
                     break;
                 case 3:
                     suspenderCliente();
@@ -136,12 +152,12 @@ public class Menu {
                     jdAPP.toFront();
                     break;
                 case 4:
-                    jdAsociarParteAutomovil jdAPA = new jdAsociarParteAutomovil(principal,true);
+                    jdAsociarParteAutomovil jdAPA = new jdAsociarParteAutomovil(principal, true);
                     jdAPA.setVisible(true);
                     jdAPA.toFront();
                     break;
                 case 5:
-                    jdActualizarPrecioProovedor jdActualizar  = new jdActualizarPrecioProovedor(principal, true);
+                    jdActualizarPrecioProovedor jdActualizar = new jdActualizarPrecioProovedor(principal, true);
                     jdActualizar.setVisible(true);
                     jdActualizar.toFront();
                     break;

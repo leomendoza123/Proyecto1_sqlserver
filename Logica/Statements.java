@@ -15,7 +15,22 @@ import java.util.ArrayList;
  * @author LMariano
  */
 public class Statements {
-
+    public static boolean existePersona(String cedula){
+        try{
+        Connection c = Conexion.conectar();
+        String query = "select top 1 cedula from Persona where"
+                + " cedula='"+cedula+"';";
+        Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            int cont=0;
+            while (rs.next()) {
+                cont+=1;
+                break;
+            }
+            if (cont==1)return true;
+        }catch(Exception e){e.printStackTrace();return false;}
+        return false;
+    }
     public static boolean InsertarPersona(String cedula,
             String nombreCliente, String direccion, String ciudad,
             ArrayList<String> telefonos) {
@@ -26,14 +41,14 @@ public class Statements {
             Statement stmt = c.createStatement();
             stmt.execute(query);
 
-            query = "select top 1 idCliente from Cliente order by idCliente desc;";
+            query = "select top 1 idCliente from Cliente WHERE NOMBRE='"+
+                    nombreCliente+"';";
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             int idCliente = -1;
             while (rs.next()) {
                 idCliente = Integer.parseInt(rs.getString(1));
             }
-
             query = "INSERT INTO Persona(cedula,idCliente) "
                     + " VALUES ('" + cedula + "'," + idCliente + ");";
             stmt = c.createStatement();
@@ -45,9 +60,10 @@ public class Statements {
                 stmt = c.createStatement();
                 stmt.execute(query);
             }
-
+            
             query = "INSERT INTO Direccion(direccion,ciudad,idCliente) "
                     + " VALUES ('" + direccion + "','" + ciudad + "'," + idCliente + ");";
+             
             stmt = c.createStatement();
             stmt.execute(query);
             return true;
@@ -63,6 +79,7 @@ public class Statements {
             String nombreCon, String cargo, String telefono) {
         Connection c = Conexion.conectar();
         try {
+            
             String query = "INSERT INTO Cliente(estado,nombre) "
                     + " VALUES ('INACTIVO','" + nombreOrg + "');";
             Statement stmt = c.createStatement();
@@ -75,7 +92,7 @@ public class Statements {
             while (rs.next()) {
                 idCliente = Integer.parseInt(rs.getString(1));
             }
-
+            System.out.println(idCliente);
             query = "INSERT INTO Organizacion(cedula,idCliente,cargo,"
                     + "nombreEncargado,telefono) "
                     + " VALUES ('" + cedula + "','" + idCliente + "','" + cargo + ""
@@ -96,7 +113,7 @@ public class Statements {
     }
 
     public static ResultSet obtenerPersona(String cedula) {
-        ResultSet rs=null;
+        ResultSet rs = null;
         try {
             Connection c = Conexion.conectar();
             String query = "select * from Cliente,Persona,Direccion,Telefono "
@@ -109,14 +126,14 @@ public class Statements {
                 System.out.println(rs.getString(2));//Estado
                 System.out.println(rs.getString(3));//nombre Cliente
                 System.out.println(rs.getString(4));//CEdula
-                
+
                 System.out.println(rs.getString(6));//iddir
                 System.out.println(rs.getString(7));//dir
                 System.out.println(rs.getString(8));//ciudad
-                
+
                 System.out.println(rs.getString(10));//id tel
                 System.out.println(rs.getString(11));//numtel
-                
+
                 System.out.println("----------");
             }
         } catch (Exception e) {
@@ -125,14 +142,14 @@ public class Statements {
         }
         return rs;
     }
-    
+
     public static ResultSet obtenerOrganizacion(String cedula) {
-        ResultSet rs=null;
+        ResultSet rs = null;
         try {
             Connection c = Conexion.conectar();
             String query = "select * from Cliente,Organizacion,Direccion"
-                    + " where Organizacion.cedula='" + cedula + "'"+
-                     " ,Organizacion.cedula='" + cedula + "'";
+                    + " where Organizacion.cedula='" + cedula + "'"
+                    + " ,Organizacion.cedula='" + cedula + "'";
             Statement stmt = c.createStatement();
             rs = stmt.executeQuery(query);
             int idCliente = -1;
@@ -393,7 +410,7 @@ public class Statements {
                     + "	ON P.idParte = TXP.FK_Parte\n"
                     + "	INNER JOIN TipoAutomovil T\n"
                     + "	ON TXP.FK_TipoAutomovil = T.idTipo\n"
-                    + "	where T.anno = "+año+" and T.modelo = "+Revisiones.tamanoString(modelo, 15)+"";
+                    + "	where T.anno = " + año + " and T.modelo = " + Revisiones.tamanoString(modelo, 15) + "";
 
             System.out.println(query);
             Statement stmt = c.createStatement();
@@ -405,4 +422,4 @@ public class Statements {
         }
 
     }
-    }
+}

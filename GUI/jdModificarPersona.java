@@ -19,11 +19,14 @@ public class jdModificarPersona extends javax.swing.JDialog {
     DefaultListModel model = new DefaultListModel();
     ArrayList<String> telefonos = new ArrayList();
     /**
-     * Creates new form jdModificarPersona
+
      */
-    public jdModificarPersona(java.awt.Frame parent, boolean modal) {
+    public jdModificarPersona(java.awt.Frame parent, boolean modal,String
+            paramCedula) {
         super(parent, modal);
         initComponents();
+        txtCedula.setText(paramCedula);
+        System.out.println(paramCedula);
     }
 
     /**
@@ -86,6 +89,9 @@ public class jdModificarPersona extends javax.swing.JDialog {
                 btnModificarActionPerformed(evt);
             }
         });
+
+        txtCedula.setEditable(false);
+        txtCedula.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -233,7 +239,7 @@ public class jdModificarPersona extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                jdModificarPersona dialog = new jdModificarPersona(new javax.swing.JFrame(), true);
+                jdModificarPersona dialog = new jdModificarPersona(new javax.swing.JFrame(), true,"");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
