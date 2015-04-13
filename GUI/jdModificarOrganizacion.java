@@ -171,6 +171,9 @@ public class jdModificarOrganizacion extends javax.swing.JDialog {
         String telefono=txtTelefono.getText();
         String direccion=txtDireccion.getText();
         String ciudad=txtCiudad.getText();
+        Statements.obtenerOrganizacion(cedula);
+        return;
+        /*
         if (nombreEnc =="" ||nombreOrg=="" || cedula =="" || cargo=="" ||
             telefono=="" || direccion=="" || ciudad==""){
             JOptionPane.showMessageDialog(null, "Faltan datos");
@@ -185,7 +188,7 @@ public class jdModificarOrganizacion extends javax.swing.JDialog {
             else{
                 JOptionPane.showMessageDialog(null, "Datos Insertados");
             }
-        }
+        }**/
     }//GEN-LAST:event_btnModificarActionPerformed
 
     /**

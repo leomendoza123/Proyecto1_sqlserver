@@ -50,8 +50,12 @@ public class Menu {
             jdAgregarClientePersona(principal, true);
         jdAgregarClienteOrganizacion jdAgregarOrg = new 
             jdAgregarClienteOrganizacion(principal, true);
-        jdModificarPersona jdModificar = new jdModificarPersona(principal, true);
+        jdModificarPersona jdModificarPersona = new 
+            jdModificarPersona(principal, true);
+        jdModificarOrganizacion modOrg=new jdModificarOrganizacion(principal, 
+                true);
         jdListaClientes jdLista= new jdListaClientes(principal, true);
+        int op;
         while (opcion != 5) {
             opcion = Integer.parseInt(
                     JOptionPane.showInputDialog(
@@ -64,10 +68,9 @@ public class Menu {
                     ));//Cambiar el titulo del cuadro
             switch (opcion) {
                 case 1:
-                    int op;
                     try{
                     op=Integer.parseInt(JOptionPane.showInputDialog(
-                            "1)Insertar Persona"+
+                            "1)Insertar Persona\n"+
                                     "2)Insertar Organizacion"));
                     if(op==1){
                         jdAgregarPersona.setVisible(true);
@@ -80,8 +83,19 @@ public class Menu {
                     }catch(Exception e){}
                     break;
                 case 2:
-                    jdModificar.setVisible(true);
-                    jdModificar.toFront();
+                    try{
+                    op=Integer.parseInt(JOptionPane.showInputDialog(
+                            "1)Modificar Persona\n"+
+                                    "2)Modificar Organizacion"));
+                    if(op==1){
+                        jdModificarPersona.setVisible(true);
+                        jdModificarPersona.toFront();
+                    }
+                    if (op==2){
+                        modOrg.setVisible(true);
+                        modOrg.setVisible(true);
+                    }
+                    }catch(Exception e){}
                     break;
                 case 3:
                     suspenderCliente();
