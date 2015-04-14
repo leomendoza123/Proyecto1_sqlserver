@@ -22,6 +22,7 @@ public class jdModificarPersona extends javax.swing.JDialog {
 
     DefaultListModel model = new DefaultListModel();
     ArrayList<String> telefonos = new ArrayList();
+    int idCliente=-1;
 
     /**
      *
@@ -55,6 +56,7 @@ public class jdModificarPersona extends javax.swing.JDialog {
                 txtDireccion.setText(rs.getString(5));
                 txtNombreC.setText(rs.getString(6));
                 cont = 1;
+                idCliente=Integer.parseInt(rs.getString(2));
             }
             model.addElement(rs.getString(1));
             listTelefonos.setModel(model);
@@ -224,6 +226,7 @@ public class jdModificarPersona extends javax.swing.JDialog {
             String nombre_completo = nombre;
             String direccion = txtDireccion.getText();
             String ciudad = txtCiudad.getText();
+            telefonos=new ArrayList<>();
             for (int i = 0; i < model.size(); i++) {
                 telefonos.add(model.get(i).toString());
             }
@@ -231,8 +234,9 @@ public class jdModificarPersona extends javax.swing.JDialog {
                     || direccion == "" || ciudad == "" || telefonos.size() == 0) {
                 JOptionPane.showMessageDialog(null, "Faltan datos");
             } else {
-                boolean flag = Statements.InsertarPersona(
-                        cedula, nombre_completo, direccion, ciudad, telefonos);
+                //AQUI
+                boolean flag = Statements.modificarPersona(cedula, nombre, direccion,
+                        ciudad, telefonos, idCliente);
                 if (flag == false) {
                     JOptionPane.showMessageDialog(null, "Faltan datos");
                 } else {
@@ -240,6 +244,7 @@ public class jdModificarPersona extends javax.swing.JDialog {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Verificar Todos los datos existen");
         }
     }//GEN-LAST:event_btnModificarActionPerformed

@@ -15,21 +15,123 @@ import java.util.ArrayList;
  * @author LMariano
  */
 public class Statements {
-    public static boolean existePersona(String cedula){
-        try{
-        Connection c = Conexion.conectar();
-        String query = "select top 1 cedula from Persona where"
-                + " cedula='"+cedula+"';";
-        Statement stmt = c.createStatement();
+
+    public static boolean existePersona(String cedula) {
+        try {
+            Connection c = Conexion.conectar();
+            String query = "select top 1 cedula from Persona where"
+                    + " cedula='" + cedula + "';";
+            Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            int cont=0;
+            int cont = 0;
             while (rs.next()) {
-                cont+=1;
+                cont += 1;
                 break;
             }
-            if (cont==1)return true;
-        }catch(Exception e){e.printStackTrace();return false;}
+            if (cont == 1) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return false;
+    }
+
+    public static boolean existeOrg(String cedula) {
+        try {
+            Connection c = Conexion.conectar();
+            String query = "select top 1 cedula from Organizacion where"
+                    + " cedula='" + cedula + "';";
+            Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            int cont = 0;
+            while (rs.next()) {
+                cont += 1;
+                break;
+            }
+            if (cont == 1) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
+    public static boolean modificarPersona(String cedula,
+            String nombreCliente, String direccion, String ciudad,
+            ArrayList<String> telefonos, int idCliente) {
+        try {
+            Connection c = Conexion.conectar();
+            String query = "update Cliente "
+                    + "set nombre='" + nombreCliente + "'"
+                    + " where idCliente=" + idCliente;
+            Statement stmt = c.createStatement();
+            stmt.execute(query);
+            System.out.println("name update");
+            query = " update Direccion "
+                    + "set direccion ='" + direccion + "'"
+                    + ", ciudad='" + ciudad + "'"
+                    + " where idCliente=" + idCliente;
+            stmt = c.createStatement();
+            stmt.execute(query);
+            System.out.println("direc modificada");
+            query = "Delete From Telefono "
+                    + " where cedula=" + cedula;
+            stmt = c.createStatement();
+            stmt.execute(query);
+            System.out.println("no problemo");
+            System.out.println("telefonos borrados");
+            for (int i = 0; i < telefonos.size(); i++) {
+                query = "INSERT INTO Telefono(numTelefono,cedula) "
+                        + " VALUES ('" + telefonos.get(i) + "','" + cedula + "');";
+                stmt = c.createStatement();
+                stmt.execute(query);
+            }
+            System.out.println("telefonos insertados");
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean modificarOrganizacion(String cedula,
+            String nombreOrg, String direccion, String ciudad,
+            String nombreCon, String cargo, String telefono, int idCliente) {
+        try {
+            Connection c = Conexion.conectar();
+            String query = "update Cliente "
+                    + "set nombre='" + nombreOrg + "'"
+                    + " where idCliente=" + idCliente;
+            Statement stmt = c.createStatement();
+            stmt.execute(query);
+
+            query = "update Organizacion "
+                    + "set cargo='" + cargo + "'"
+                    + "set nombreEncargado='" + nombreCon + "'"
+                    + "set telefono='" + telefono + "'"
+                    + " where idCliente=" + idCliente;
+            stmt = c.createStatement();
+            stmt.execute(query);
+
+            query = " update Direccion "
+                    + "set direccion ='" + direccion + "'"
+                    + ", ciudad='" + ciudad + "'"
+                    + " where idCliente=" + idCliente;
+            stmt = c.createStatement();
+            stmt.execute(query);
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 
     public static boolean InsertarPersona(String cedula,
@@ -60,10 +162,10 @@ public class Statements {
                 stmt = c.createStatement();
                 stmt.execute(query);
             }
-            
+
             query = "INSERT INTO Direccion(direccion,ciudad,idCliente) "
                     + " VALUES ('" + direccion + "','" + ciudad + "'," + idCliente + ");";
-             
+
             stmt = c.createStatement();
             stmt.execute(query);
             return true;
@@ -79,7 +181,7 @@ public class Statements {
             String nombreCon, String cargo, String telefono) {
         Connection c = Conexion.conectar();
         try {
-            
+
             String query = "INSERT INTO Cliente(estado,nombre) "
                     + " VALUES ('INACTIVO','" + nombreOrg + "');";
             Statement stmt = c.createStatement();
@@ -118,16 +220,13 @@ public class Statements {
             Connection c = Conexion.conectar();
             String query = "Select t.numTelefono,c.idCliente,c.estado,d.ciudad,"
                     + "d.direccion,c.nombre from Cliente as c "
-                    +"inner join Persona as per "
+                    + "inner join Persona as per "
                     + "On Per.idCliente=c.idCliente "
-                    
-                    +"Inner join Direccion d " 
-                    +"On Per.idCliente=d.idCliente "
-                    
-                    +"Inner join Telefono t "
-                    +"On Per.cedula=t.cedula "
-                    
-                    + " WHERE per.cedula='"+cedula+"';";
+                    + "Inner join Direccion d "
+                    + "On Per.idCliente=d.idCliente "
+                    + "Inner join Telefono t "
+                    + "On Per.cedula=t.cedula "
+                    + " WHERE per.cedula='" + cedula + "';";
             Statement stmt = c.createStatement();
             rs = stmt.executeQuery(query);
         } catch (Exception e) {
@@ -141,30 +240,20 @@ public class Statements {
         ResultSet rs = null;
         try {
             Connection c = Conexion.conectar();
-            String query = "select * from Cliente,Organizacion,Direccion"
-                    + " where Organizacion.cedula='" + cedula + "'"
-                    + " ,Organizacion.cedula='" + cedula + "'";
+            String query = "select c.idCliente,c.nombre,c.estado,d.ciudad,d.direccion,"
+                    + "org.cargo,org.nombreEncargado,org.telefono"
+                    + "from Proyecto_I.dbo.Cliente c "
+                    + "Inner join Proyecto_I.dbo.Organizacion org "
+                    + "On org.idCliente=c.idCliente "
+                    + "Inner join Proyecto_I.dbo.Direccion d "
+                    + "On org.idCliente=d.idCliente "
+                    + " WHERE org.cedula='" + cedula + "';";
             Statement stmt = c.createStatement();
             rs = stmt.executeQuery(query);
-            int idCliente = -1;
-            while (rs.next()) {
-                System.out.println(rs.getString(1));//IDCLiente
-                System.out.println(rs.getString(2));//Estado
-                System.out.println(rs.getString(3));//nombre Cliente
-                System.out.println(rs.getString(4));//CEdula
-                System.out.println(rs.getString(5));
-                System.out.println(rs.getString(6));//iddir
-                System.out.println(rs.getString(7));//dir
-                System.out.println(rs.getString(8));//ciudad
-                System.out.println(rs.getString(9));
-                System.out.println(rs.getString(10));//id tel
-                System.out.println(rs.getString(11));//numtel
-                System.out.println(rs.getString(12));
-                System.out.println("----------");
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ssssss");
+            System.out.println("Error al cargar datos");
         }
         return rs;
     }

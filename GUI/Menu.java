@@ -54,9 +54,6 @@ public class Menu {
         JFrame principal = new JFrame();
         jdAgregarClientePersona jdAgregarPersona = new jdAgregarClientePersona(principal, true);
         jdAgregarClienteOrganizacion jdAgregarOrg = new jdAgregarClienteOrganizacion(principal, true);
-        
-        jdModificarOrganizacion modOrg = new jdModificarOrganizacion(principal,
-                true);
         jdListaClientes jdLista = new jdListaClientes(principal, true);
         int op;
         while (opcion != 5) {
@@ -93,7 +90,7 @@ public class Menu {
                                     "Ingrese la cedula de la persona a modificar");
                             if (Statements.existePersona(cedula)) {
                                 jdModificarPersona jdModPersona = new 
-        jdModificarPersona(principal, true,"");
+        jdModificarPersona(principal, true,cedula);
                                 jdModPersona= new jdModificarPersona(principal,
                                         true, cedula);
                                 jdModPersona.setVisible(true);
@@ -104,8 +101,19 @@ public class Menu {
                             }
                         }
                         if (op == 2) {
-                            modOrg.setVisible(true);
-                            modOrg.toFront();
+                            String cedula = JOptionPane.showInputDialog(
+                                    "Ingrese la cedula de la organizacion a modificar");
+                            if (Statements.existeOrg(cedula)) {
+                                jdModificarOrganizacion modOrg = new 
+        jdModificarOrganizacion(principal, true,"");
+                                modOrg= new jdModificarOrganizacion(principal,
+                                        true, cedula);
+                                modOrg.setVisible(true);
+                                modOrg.toFront();
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Cliente no existe");
+                            }
                         }
                     } catch (Exception e) {
                     }

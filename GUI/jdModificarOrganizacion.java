@@ -7,6 +7,10 @@
 package GUI;
 
 import Logica.Statements;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,11 +22,35 @@ public class jdModificarOrganizacion extends javax.swing.JDialog {
     /**
      * Creates new form jdModificarOrganizacion
      */
-    public jdModificarOrganizacion(java.awt.Frame parent, boolean modal) {
+    int idCliente=-1;
+    public jdModificarOrganizacion(java.awt.Frame parent, boolean modal,
+            String paramCedula) {
         super(parent, modal);
         initComponents();
+        txtCedula.setText(paramCedula);
+        try {
+            cargarDatos(paramCedula);
+            System.out.println("yupi");
+        } catch (SQLException ex) {
+            Logger.getLogger(jdModificarOrganizacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
+    private void cargarDatos(String cedula) throws SQLException {
+        ResultSet rs = Statements.obtenerOrganizacion(cedula);
+        if (rs == null) {
+            System.out.println("indeed");
+        }
+        while (rs.next()) {
+            idCliente=Integer.parseInt(rs.getString(1));
+            txtNombreOrg.setText(rs.getString(2));
+            txtCiudad.setText(rs.getString(4));
+            txtDireccion.setText(rs.getString(5));
+            txtCargo.setText(rs.getString(6));
+            txtNombreCon.setText(rs.getString(7));
+            txtTelefono.setText(rs.getString(8));
+            System.out.println("done");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,6 +95,8 @@ public class jdModificarOrganizacion extends javax.swing.JDialog {
         jLabel14.setText("Telefono Contacto");
 
         jLabel1.setText("Ingrese cedula, ej A-TTT-CCCCCC");
+
+        txtCedula.setEditable(false);
 
         jLabel9.setText("Ciudad");
 
@@ -171,24 +201,21 @@ public class jdModificarOrganizacion extends javax.swing.JDialog {
         String telefono=txtTelefono.getText();
         String direccion=txtDireccion.getText();
         String ciudad=txtCiudad.getText();
-        Statements.obtenerOrganizacion(cedula);
-        return;
-        /*
         if (nombreEnc =="" ||nombreOrg=="" || cedula =="" || cargo=="" ||
-            telefono=="" || direccion=="" || ciudad==""){
+                telefono=="" || direccion=="" || ciudad==""){
             JOptionPane.showMessageDialog(null, "Faltan datos");
         }
         else{
-            boolean flag=Statements.InsertarOrganizacion(cedula,
-                nombreOrg,  direccion,  ciudad,
-                nombreEnc, cargo, telefono);
-            if (flag==false){
-                JOptionPane.showMessageDialog(null, "Faltan datos");
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Datos Insertados");
-            }
-        }**/
+             boolean flag=Statements.modificarOrganizacion(cedula,
+             nombreOrg,  direccion,  ciudad,
+             nombreEnc, cargo, telefono,idCliente);
+             if (flag==false){
+                 JOptionPane.showMessageDialog(null, "Faltan datos");
+             }
+             else{
+                 JOptionPane.showMessageDialog(null, "Datos Insertados");
+             }
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
@@ -221,7 +248,7 @@ public class jdModificarOrganizacion extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                jdModificarOrganizacion dialog = new jdModificarOrganizacion(new javax.swing.JFrame(), true);
+                jdModificarOrganizacion dialog = new jdModificarOrganizacion(new javax.swing.JFrame(), true,"");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
