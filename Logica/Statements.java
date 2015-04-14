@@ -241,7 +241,7 @@ public class Statements {
         try {
             Connection c = Conexion.conectar();
             String query = "select c.idCliente,c.nombre,c.estado,d.ciudad,d.direccion,"
-                    + "org.cargo,org.nombreEncargado,org.telefono"
+                    + "org.cargo,org.nombreEncargado,org.telefono "
                     + "from Proyecto_I.dbo.Cliente c "
                     + "Inner join Proyecto_I.dbo.Organizacion org "
                     + "On org.idCliente=c.idCliente "
