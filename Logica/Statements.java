@@ -16,6 +16,128 @@ import java.util.ArrayList;
  */
 public class Statements {
 
+    public static String ListarOrg() {
+        String resultado = "\n\n\n\n Organizaciones\n\n\n";
+        ResultSet rs = null;
+        try {
+            Connection c = Conexion.conectar();
+            String query = "select c.idCliente,c.nombre,org.cedula,"
+                    + "c.estado,d.ciudad,d.direccion,"
+                    + "org.cargo,org.nombreEncargado,org.telefono "
+                    + "from Proyecto_I.dbo.Cliente c "
+                    + "Inner join Proyecto_I.dbo.Organizacion org "
+                    + "On org.idCliente=c.idCliente "
+                    + "Inner join Proyecto_I.dbo.Direccion d "
+                    + "On org.idCliente=d.idCliente ";
+            Statement stmt = c.createStatement();
+            rs = stmt.executeQuery(query);
+            int cont=0;
+            while (rs.next()){
+                cont++;
+                resultado+=cont+")\n Nombre: "+rs.getString(2)+"\n"+
+                        "\nCedula: "+rs.getString(3)+"\nEstado: "+
+                        rs.getString(4)+"\nCiudad: "+rs.getString(5)+
+                        "\nDireccion: "+rs.getString(6)+"\nCargo de Contacto: "+
+                        rs.getString(7)+"\nNombre Contacto: "+rs.getString(8)+
+                        "\nTelefono Contacto: "+rs.getString(9);
+            }
+        } catch (Exception e) {
+        }
+        return resultado;
+    }
+
+    public static String ListarPersonas() {
+        ResultSet rs = null;
+        ResultSet rs2 = null;
+        String resultado = "Clientes Personas: \n\n\n";
+        try {
+
+            Connection c = Conexion.conectar();
+            String query = "Select c.idCliente,c.estado,d.ciudad,"
+                    + "d.direccion,c.nombre,per.cedula from Cliente as c "
+                    + "inner join Persona as per "
+                    + "On Per.idCliente=c.idCliente "
+                    + "Inner join Direccion d "
+                    + "On Per.idCliente=d.idCliente ";
+            Statement stmt = c.createStatement();
+            rs = stmt.executeQuery(query);
+            int cont = 0;
+            while (rs.next()) {
+                cont++;
+                resultado += cont + ") \nNombre: " + rs.getString(5) + "\n"
+                        + "Cedula: " + rs.getString(6) + "\nEstado: " + rs.getString(2)
+                        + "\nCiudad: " + rs.getString(3) + "\nDireccion: "
+                        + rs.getString(4);
+                query = "Select per.cedula,t.numTelefono "
+                        + "                 from Persona as per "
+                        + "                 inner join Telefono as t "
+                        + "                 On t.cedula=per.cedula "
+                        + "                 where t.cedula=" + rs.getString(6);
+                stmt = c.createStatement();
+                rs2 = stmt.executeQuery(query);
+                resultado += "\nTelefonos: ";
+                while (rs2.next()) {
+                    resultado += "\n- " + rs2.getString(2);
+                }
+                resultado += "\n\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error");
+        }
+        return resultado;
+    }
+
+    public static boolean suspenderPersona(String cedula) {
+        try {
+            Connection c = Conexion.conectar();
+            String query = "Select c.idCliente from cliente c "
+                    + "inner join persona p "
+                    + "on p.idCliente=c.idCliente "
+                    + " where p.cedula='" + cedula + "';";
+            Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            int idCliente = -1;
+            while (rs.next()) {
+                idCliente = Integer.parseInt(rs.getString(1));
+                break;
+            }
+            query = "update Cliente "
+                    + "set estado='SUSPENDIDO'"
+                    + " where idCliente=" + idCliente;
+            stmt = c.createStatement();
+            stmt.execute(query);
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    public static boolean suspenderOrg(String cedula) {
+        try {
+            Connection c = Conexion.conectar();
+            String query = "Select c.idCliente from cliente c "
+                    + "inner join Organizacion p "
+                    + "on p.idCliente=c.idCliente "
+                    + " where p.cedula='" + cedula + "';";
+            Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            int idCliente = -1;
+            while (rs.next()) {
+                idCliente = Integer.parseInt(rs.getString(1));
+                break;
+            }
+            query = "update Cliente "
+                    + "set estado='SUSPENDIDO'"
+                    + " where idCliente=" + idCliente;
+            stmt = c.createStatement();
+            stmt.execute(query);
+            return true;
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
     public static boolean existePersona(String cedula) {
         try {
             Connection c = Conexion.conectar();

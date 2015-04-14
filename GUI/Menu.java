@@ -119,7 +119,36 @@ public class Menu {
                     }
                     break;
                 case 3:
-                    suspenderCliente();
+                    try {
+                        op = Integer.parseInt(JOptionPane.showInputDialog(
+                                "1)Suspender Persona\n"
+                                + "2)Suspender Organizacion"));
+                        if (op == 1) {
+                            String cedula = JOptionPane.showInputDialog(
+                                    "Ingrese la cedula de la persona a suspender");
+                            if (Statements.existePersona(cedula)) {
+                                Statements.suspenderPersona(cedula);
+                                    JOptionPane.showMessageDialog(null,
+                                        "Cliente Suspendido");
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Cliente no existe");
+                            }
+                        }
+                        if (op == 2) {
+                            String cedula = JOptionPane.showInputDialog(
+                                    "Ingrese la cedula de la organizacion a suspender");
+                            if (Statements.existeOrg(cedula)) {
+                                    Statements.suspenderOrg(cedula);
+                                    JOptionPane.showMessageDialog(null,
+                                        "Cliente Suspendido");
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "Cliente no existe");
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
                     break;
                 case 4:
                     jdLista.setVisible(true);

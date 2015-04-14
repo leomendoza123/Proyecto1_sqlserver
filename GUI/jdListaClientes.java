@@ -6,6 +6,8 @@
 
 package GUI;
 
+import Logica.Statements;
+
 /**
  *
  * @author LMariano
@@ -18,6 +20,9 @@ public class jdListaClientes extends javax.swing.JDialog {
     public jdListaClientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        String resultado=Statements.ListarPersonas();
+        resultado+=Statements.ListarOrg();
+        txtListado.setText(resultado);
     }
 
     /**
@@ -31,16 +36,16 @@ public class jdListaClientes extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtListado = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Listado de Clientes");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtListado.setColumns(20);
+        txtListado.setRows(5);
+        jScrollPane1.setViewportView(txtListado);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -49,10 +54,10 @@ public class jdListaClientes extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(126, 126, 126)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(225, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -116,6 +121,6 @@ public class jdListaClientes extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea txtListado;
     // End of variables declaration//GEN-END:variables
 }
